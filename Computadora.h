@@ -26,7 +26,7 @@ public:
     * vectores
     */
     string vecJugadas[10] = {};
-    unordered_map<int, string>tablero = {
+    unordered_map<int,string>tablero = {
             {1, " "},
             {2, " "},
             {3, " "},
@@ -53,7 +53,7 @@ public:
 
 
 //private:
-    int minimax(pair<int,string> posicion,int rama, bool indicadorMaximo);
+    int minimax(pair<int,string> tabs, int rama, bool indicadorMaximo);
 };
 
 

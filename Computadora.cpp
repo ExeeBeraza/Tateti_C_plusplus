@@ -95,22 +95,33 @@ bool Computadora::verificarGanador(string persona) {
 
 };
 
-int Computadora::minimax(pair<int,string> posicion ,int rama, bool indicadorMaximo) {
+int Computadora::minimax(pair<int,string> tabs, int rama, bool indicadorMaximo) {
+    // TODO: Verificacion de resultados
 
-    // Para avanzar checkea que este libre
-    if (posicion.second == " "){
-        cout << "La posicion: " << posicion.first << endl;
-
-        // Valido el parametro indicador para poner "X" o "0"
-        if (indicadorMaximo){ posicion.second = "0";} else {posicion.second = "X";}
-
-        // Paso recursivo
-        minimax({posicion.first + 1,posicion.second},rama+1,!indicadorMaximo);
-
-        // Reseteo la posicion
-        posicion.second = " ";
+    if(indicadorMaximo){
+        mejorPuntaje = -800;
+        for(pair<int,string> element : tabs){
+            if (element.second == " "){
+                element.second = "0";
+                puntaje = minimax(element,rama+1,false);
+                element.second = " ";
+                if(puntaje > mejorPuntaje)
+                    mejorPuntaje = puntaje;
+            }
+        }
+    }else{
+        mejorPuntaje = 800;
+        for(pair<int, string>element : tabs){
+            if (element.second == " "){
+                element.second = "X";
+                puntaje = minimax(element,rama+1, true);
+                element.second = " ";
+                if(puntaje < mejorPuntaje)
+                    mejorPuntaje = puntaje;
+            }
+        }
     }
-    return 0;
+    return mejorPuntaje;
 }
 
 int Computadora::jugarComputadora() {
@@ -123,15 +134,14 @@ int Computadora::jugarComputadora() {
             element.second = "0";
             //cout << "Procediendo con el minmax"<< endl;
             // Hay que revisar esta funcion
-            //puntaje = minimax(0,false);
+            puntaje = minimax(element,0,false);
             //cout << "El resultado del minimax: " << puntaje << endl;
 
             element.second = " ";
-            minimax(element,0,true);
-            //if(puntaje > mejorPuntaje){
-            //    puntaje = mejorPuntaje;
-            mejorMovimiento = element.first;
-            //}
+            if(puntaje > mejorPuntaje){
+                mejorPuntaje = puntaje;
+                mejorMovimiento = element.first;
+            }
         }
 
     }
