@@ -53,7 +53,7 @@ public:
 
 
 //private:
-    int minimax(pair<int,string> tabs, int rama, bool indicadorMaximo);
+    int minimax(unordered_map<int,string> tabs, int rama, bool indicadorMaximo);
 };
 
 

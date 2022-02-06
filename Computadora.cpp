@@ -69,7 +69,7 @@ bool Computadora::verificarGanador() {
 
     bool ganador = false;
 
-    for(int i=1; i <= 24 ; i = i+3) {
+    for(int i=0; i <= 23 ; i = i+3) {
         if (vecJugadas[i] == vecJugPos[i]  && vecJugadas[i+1] == vecJugPos[i+1] && vecJugadas[i + 2] == vecJugPos[i + 2] && vecJugadas[i] == " ") {
             ganador = true;
         }
@@ -85,7 +85,7 @@ bool Computadora::verificarGanador(string persona) {
 
     bool ganador = false;
 
-    for(int i=1; i <= 24 ; i = 1+3) {
+    for(int i=0; i <= 23 ; i = 1+3) {
         if (vecJugadas[i] == vecJugPos[i]  && vecJugadas[i+1] == vecJugPos[i+1] && vecJugadas[i + 2] == vecJugPos[i + 2] && vecJugadas[i] == persona) {
             ganador = true;
         }
@@ -95,26 +95,26 @@ bool Computadora::verificarGanador(string persona) {
 
 };
 
-int Computadora::minimax(pair<int,string> tabs, int rama, bool indicadorMaximo) {
+int Computadora::minimax(unordered_map<int,string> tabs, int rama, bool indicadorMaximo) {
     // TODO: Verificacion de resultados
 
     if(indicadorMaximo){
-        mejorPuntaje = -800;
+        mejorPuntaje = -1000;
         for(pair<int,string> element : tabs){
             if (element.second == " "){
                 element.second = "0";
-                puntaje = minimax(element,rama+1,false);
+                puntaje = minimax({{element.first,element.second}},rama+1,false);
                 element.second = " ";
                 if(puntaje > mejorPuntaje)
                     mejorPuntaje = puntaje;
             }
         }
     }else{
-        mejorPuntaje = 800;
+        mejorPuntaje = 1000;
         for(pair<int, string>element : tabs){
             if (element.second == " "){
                 element.second = "X";
-                puntaje = minimax(element,rama+1, true);
+                puntaje = minimax({{element.first,element.second}},rama+1, true);
                 element.second = " ";
                 if(puntaje < mejorPuntaje)
                     mejorPuntaje = puntaje;
@@ -125,19 +125,19 @@ int Computadora::minimax(pair<int,string> tabs, int rama, bool indicadorMaximo) 
 }
 
 int Computadora::jugarComputadora() {
-    cout << "Entro" << endl;
-
     mejorPuntaje = -1000;
+    mejorMovimiento = 0;
 
     for(pair<int,string> element : tablero){
         if(element.second == " "){
             element.second = "0";
             //cout << "Procediendo con el minmax"<< endl;
             // Hay que revisar esta funcion
-            puntaje = minimax(element,0,false);
+            puntaje = minimax({{element.first,element.second}},0,false);
             //cout << "El resultado del minimax: " << puntaje << endl;
 
             element.second = " ";
+
             if(puntaje > mejorPuntaje){
                 mejorPuntaje = puntaje;
                 mejorMovimiento = element.first;
@@ -146,7 +146,7 @@ int Computadora::jugarComputadora() {
 
     }
 
-    cout << "LLegue"<<endl;
+    cout << "LLegue: " << mejorMovimiento <<endl;
     return insertarFicha("0", mejorMovimiento);
 }
 
