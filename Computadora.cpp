@@ -95,90 +95,22 @@ bool Computadora::verificarGanador(string persona) {
 
 };
 
-int Computadora::minimax(int rama, bool indicadorMaximo) {
+int Computadora::minimax(pair<int,string> posicion ,int rama, bool indicadorMaximo) {
 
-    /*
-    // Resultados de partidas
-    cout << "Verificando resultados..."<< endl;
+    // Para avanzar checkea que este libre
+    if (posicion.second == " "){
+        cout << "La posicion: " << posicion.first << endl;
 
-    if(verificarGanador("0")){
-        return 100;
-    }else if(verificarGanador("X")){
-        return -100;
-    }else if(esEmpate()){
-        return 0;
+        // Valido el parametro indicador para poner "X" o "0"
+        if (indicadorMaximo){ posicion.second = "0";} else {posicion.second = "X";}
+
+        // Paso recursivo
+        minimax({posicion.first + 1,posicion.second},rama+1,!indicadorMaximo);
+
+        // Reseteo la posicion
+        posicion.second = " ";
     }
-    */
-
-    auto it = tablero.begin();
-
-
-    // Verifico si el indicador me permite seguir profundizando en las ramas
-    if (indicadorMaximo){
-        mejorPuntaje = -10000;
-        // Recorro todos los casilleros del tablero mientras que puntaje sea distinto de 0
-        while (it->second == " " ){
-            cout << "Posicion " << it->first << it->second << endl;
-            // Verifico si esta vacio
-            //if (it->second == " ") {
-            // En caso afirmativo lo marco y asigno puntaje diciendole que no profundice la rama
-            //it->second = "0";
-            //puntaje = minimax(rama + 1, false);
-            // Reseteo el valor de la posicion
-            //it->second = " ";
-            // Verifico que el puntaje sea menor al puntaje mayor
-            /*
-            if (puntaje > mejorPuntaje) {
-                puntaje = mejorPuntaje;
-            }
-            */
-            //}
-            it++;
-        }
-        //mismo que lo anterior exceptuando algunas opuestas y debe ser así
-
-    }//else{
-    //mejorPuntaje = 10000;
-    // Recorro todos los casilleros del tablero mientras que puntaje sea distinto de 0
-    //while (it->second == " " ) {
-    //cout << "Posicion " << it->first << it->second << endl;
-    // Verifico si esta vacio
-    //if (it->second == " ") {
-
-    // En caso afirmativo lo marco y asigno puntaje diciendole que no profundice la rama
-    //it->second = "X";
-    //puntaje = minimax(rama + 1, true);
-    // Reseteo el valor de la posicion
-    //it->second = " ";
-    // Verifico que el puntaje sea menor al puntaje mayor
-
-    //if (puntaje < mejorPuntaje) {
-    //    puntaje = mejorPuntaje;
-    // }
-
-    //}
-    // it++;
-    // }
-    //}
-
-
-    /*
-    }else{
-        mejorPuntaje = 10000;
-        for(pair<int,string> elemento : tablero){
-            if(elemento.second == " "){
-                elemento.second = "X";
-                puntaje = minimax(rama+1, true);
-                elemento.second = " ";
-                if(puntaje < mejorPuntaje) {
-                    puntaje = mejorPuntaje;
-                }
-            }
-        }
-    }
-    */
-    //cout << "Retornando el puntaje... " << puntaje << endl;
-    return puntaje;
+    return 0;
 }
 
 int Computadora::jugarComputadora() {
@@ -195,7 +127,7 @@ int Computadora::jugarComputadora() {
             //cout << "El resultado del minimax: " << puntaje << endl;
 
             element.second = " ";
-            minimax(0,true);
+            minimax(element,0,true);
             //if(puntaje > mejorPuntaje){
             //    puntaje = mejorPuntaje;
             mejorMovimiento = element.first;

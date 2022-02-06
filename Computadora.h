@@ -53,7 +53,7 @@ public:
 
 
 //private:
-    int minimax(int rama, bool indicadorMaximo);
+    int minimax(pair<int,string> posicion,int rama, bool indicadorMaximo);
 };
 
 
