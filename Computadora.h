@@ -26,6 +26,11 @@ class Computadora {
     * vectores
     */
     string vecJugadas[10];
+
+    /*
+     * Primera posicion: numero del casillero
+     * Segunda posicion: contenido
+    */
     unordered_map<int,string> tablero = {
             {1, " "},
             {2, " "},

@@ -145,27 +145,31 @@ int Computadora::minimax(unordered_map<int,string> tabs, int rama, bool indicado
 
 int Computadora::jugarComputadora() {
 
-    mejorPuntaje = -1000; //Le asigno a la variable mejorPuntaje un número por default para luego ser comparada con la variable que retornará puntaje(que retornará) la función minimax
+    // Establesco el mejor puntaje por default (se
+    mejorPuntaje = -1000;
 
-    for(pair<int,string> element : tablero){  //recore el tablero/definido como diccionario
-        //preguntará por el segunto elemento del diccionario es decir, la contine los valores String..ya que element.first contiene los Integer que serán el indices
+    // Recorro el tablero
+    for(pair<int,string> element : tablero){
+
+        // ¿El casillero esta vacio?
         if(element.second == " "){
-            //...por defecto si la primera poscion esta vacía inserta la ficha en este mismo lugar
+            // Ocupo el lugar (momentaneamente)
             element.second = "0";
-            //cout << "Procediendo con el minmax"<< endl;
-            //llamando a la función minimax por medio la variable puntaje que adoptará el valor de dicha función
+            // Asigno el puntaje
             puntaje = minimax({{element.first,element.second}},0,false);
-            //cout << "El resultado del minimax: " << puntaje << endl;
             element.second = " ";
 
-            if(puntaje > mejorPuntaje){   // preguntará en cada ciclo, por ambas variables 'importantes' si son iguales, idea implementada por lo que se llama poda-alfa
-                mejorPuntaje = puntaje;     // igualo ambos valores como actualización del punteje general
-                mejorMovimiento = element.first;  //le asigna el primer valor del tablero osea el integer, en la que la vuelta donde llegó que si se cumple la condicón anterior
+            if(puntaje > mejorPuntaje){
+                mejorPuntaje = puntaje;
+
+                // Indico que el mejor movimiento es el numero de casillero retornado mas arriba
+                mejorMovimiento = element.first;
             }
         }
 
     }
 
-    return insertarFicha("0", mejorMovimiento); //retorna como resultado la función que insertará la ficha dentro del tablero pasandole como parametro, "0" que será la ficha de la computadora y mejormovimiento que tendrá como valor aquel indice del diccionario tablero
+    // Ocupo el lugar (definitivamente)
+    return insertarFicha("0", mejorMovimiento);
 }
 
