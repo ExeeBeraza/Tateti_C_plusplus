@@ -25,19 +25,8 @@ public:
     /*
     * vectores
     */
-    string vecJugadas[10] = {};
-    unordered_map<int,string>tablero = {
-            {1, " "},
-            {2, " "},
-            {3, " "},
-            {4, " "},
-            {5, " "},
-            {6, " "},
-            {7, " "},
-            {8, " "},
-            {9, " "},
-            {10, " "}
-    };
+    string vecJugadas[10];
+    unordered_map<int,string>tablero = {{1, " "},{2, " "},{3, " "},{4, " "},{5, " "},{6, " "},{7, " "},{8, " "},{9, " "};//,{10, " "}};
     string vecJugPos[24] = {"1", "5", "9", "3", "5", "7", "1", "4", "7","2", "5", "8", "3", "6", "9", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     Computadora();
@@ -48,7 +37,6 @@ public:
     int jugarComputadora();
     int jugarHumano(string ficha,int casilla);
     bool verificarGanador();
-    bool verificarGanador(string persona);
     bool esEmpate();
 
 

@@ -36,7 +36,7 @@ int DatoSesion::buscarDatos(string nombre_usuario, string password){
     int resultado=0;
 
     string linea;
-    string busca;
+    string busca = nombre_usuario + password;
 
     if(validarDatos(nombre_usuario,password)==true){
 

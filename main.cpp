@@ -7,18 +7,22 @@
 #include "Computadora.h"
 #include "Computadora.cpp"
 #include "DatoSesion.cpp"
+#include "Score.cpp"
 #include <iostream>
-#include <string>
-#include <stdio.h>
+
+
 
 using namespace std;
 
 int main(){
 
+    /* Abstraciones de clases*/
     Computadora oComputadora;
     Jugador oJugador;
     DatoSesion datoSesion;
+    Score score;
 
+    /* variables locales, contadores, opciones para el menó...etc*/
     int modoJuego, opIngreso, intentos = 0;
     bool verificador = true;
 
@@ -30,49 +34,58 @@ int main(){
     cout << "Eliga una de las opciones: ";
 
     cin >> opIngreso;
+    while(intentos <= 10){
+         if(opIngreso==1){
 
-    if(opIngreso==1){
+            cout<<"Nombre de usuario: ";
+            cin >> oJugador.nombre_usuario;
 
-        cout<<"Nombr e de usuario: ";
-        cin >> oJugador.nombre_usuario;
+            cout<<"contraseña: ";
+            cin >> oJugador.password;
 
-        cout<<"contraseña: ";
-        cin >> oJugador.password;
+            if(datoSesion.guardarDatos(oJugador.nombre,oJugador.nombre_usuario,oJugador.password)==0){
+                cout<<"¡Datos ingresados incorrectamente!"<<endl;
+                intentos ++;
+            };
+         }
+        else if(opIngreso==2){
 
-        if(datoSesion.guardarDatos(oJugador.nombre,oJugador.nombre_usuario,oJugador.password)==0){
-            cout<<"¡Datos ingresados incorrectamente!"<<endl;
+            cout << "Nombre: ";
+            cin >> oJugador.nombre;
 
+            cout<<"Nombre de usuario: ";
+            cin >> oJugador.nombre_usuario;
+
+            cout << "contraseña: ";
+            cin >> oJugador.password;
+
+            if(datoSesion.buscarDatos(oJugador.nombre_usuario,oJugador.password)==2){
+                cout<<"Encontrado!"<<endl;
+            }
+            else if(datoSesion.buscarDatos(oJugador.nombre_usuario,oJugador.password)==1){
+                cout<<"NO Encontrado!"<<endl;
+            }
+            else{
+                cout<<"Datos incorrectos"<<endl;
         };
     }
-    else if(opIngreso==2){
-
-        cout << "Nombre: ";
-        cin >> oJugador.nombre;
-
-        cout<<"Nombre de usuario: ";
-        cin >> oJugador.nombre_usuario;
-
-        cout << "contraseña: ";
-        cin >> oJugador.password;
 
 
-        if(datoSesion.buscarDatos(oJugador.nombre_usuario,oJugador.password)==2){
-            cout<<"Encontrado!"<<endl;
-        }
-        else if(datoSesion.buscarDatos(oJugador.nombre_usuario,oJugador.password)==1){
-            cout<<"NO Encontrado!"<<endl;
-        }
-        else{
-            cout<<"Datos incorrectos"<<endl;
 
-        };
 
-    }
+
+
+
+
+
+     }
+
     */
     cout << "────────────────────────────────────────────────────────────────" << endl;
     cout << "               1 --> 1vs1                                       " << endl;
     cout << "               2 --> vs Computadora                             " << endl;
     cout << "────────────────────────────────────────────────────────────────" << endl;
+    cout << "Eliga una de las opciones: ";
 
     cin >> modoJuego;
 
@@ -94,26 +107,35 @@ int main(){
             cout << "Turno 0 ";
             cin >> oJugador.numeroCasillero;
             oComputadora.jugarHumano("0",oJugador.numeroCasillero);
-            //system("clear");
 
-            if(oComputadora.esEmpate()){
+            if(oComputadora.verificarGanador()==true) {
+                cout << "¡X GANADOR!";
+                verificador = false
+            }
+            else if(oComputadora.verificarGanador()== false){
+                cout << "¡0 GANADOR!";
+                verificador = false;
+            }
+
+            else if(oComputadora.esEmpate()){
                 cout << "¡EMPATE!";
                 verificador = false;
             }
         }
     }
+
     else if(modoJuego ==2){
         while (verificador == true) {
             /*Turno en X*/
             cout << "Turno X" << endl;
             cin >> oJugador.numeroCasillero;
             oComputadora.jugarHumano("X",oJugador.numeroCasillero);
-            //system("clear");
 
             /*Turno en 0*/
             cout << "Turno 0" << endl;
             oComputadora.jugarComputadora();
-            //system("clear");
+
+            score.guardarScore("0");
 
         }
     }
@@ -122,6 +144,87 @@ int main(){
 }
 
 
+/*#include <cstdlib>
+#inculde <iostream>
 
+using namespace std;
+
+int main(int argc, char** argv){
+
+    int numerocordena; //valor de la variable
+
+    //&N es el valor de la
+
+    //auto toma de numerocordenada su dirección de memoria y es un puntero
+    int *auto = &N;
+
+
+    //Asignó a una varible puntero la dirección de una variable no puntero
+    numerocordenada = *Z;
+    Z = &N;
+    // A variable puntero puede asignarse el contenido de otra variable puntero si son compatibles (ambos puntero apuntan al mismo tipo de dato).  --> este caso int
+
+    int *Y,*X;
+    Y=X
+
+
+    // A puntero es posible asignarle el valor NULL (el puntero no apunta a dirección de memoria alguna).
+
+    int *Y;
+    Y = NULL;
+
+
+    //Es posible sumar o restar una cantidad entera a una varialbe puntero. La nueva dirección de memoria obtenida difiere de la inicial en una cantidad de bytes dada por el tipo de dato del apuntado.
+
+    bool *dato;
+
+    cout << dato << endl;			0x23cc8c
+
+    dato += 1;
+
+    cout << dato << endl;			0x23cc8d
+
+
+
+    Es posbile comparar dos variables puntero si estas son compatibles (apunta a datos de igual tipo)
+
+    u==v        u!=v       u==NULL          u<v           u>= v
+
+    Es posbile operar los datos apuntados a través de la notación de punteros:
+
+    *p < *q            *p++         (*q)    --         *r = 23.5
+
+*/
+
+/*Punteros y apilamiento*/
+
+
+
+/*
+int *pila;
+int dato;
+
+dato = 1;
+*pila = dato;   //cargo un valor 1 en la pila
+
+dato = 3;
+pila += 1;         // al incrementar un int, se avanzan 4 bytes.
+*pila = dato;      // cargo un valor 3 en la pila
+
+
+dato = 5;
+pila += 1;
+*pila = dato;
+
+for(int i=0;i<3;i++){
+cout << "Posición: " << &pila << ", Dato: " << *pila << endl;
+pila--;   //Mediante un ciclo, se retrocede de a 4 bytes, para mostrar el "dato" de cada 				apuntamiento en memoria
+};
+
+
+
+return 0;
+}
+*/
 
 

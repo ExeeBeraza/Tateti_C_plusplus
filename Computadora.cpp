@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <stdio.h>
 
 using namespace std;
 
@@ -30,9 +31,11 @@ int Computadora::insertarFicha(string ficha, int casilla) {
 
 int Computadora::jugarHumano(string ficha,int casilla) {
 
-    vecJugadas->append(to_string(casilla));
+    vecJugadas.sort();
+    vecJugadas[casilla] += casilla;  //vecJugadas//vecJugadas->append(to_string(casilla));
 
-    return insertarFicha(ficha,casilla);
+
+    return insertarFicha(ficha,casilla); //retorna como resultado la función que insertará la ficha dentro del tablero pasandole como parametro, "X" que será la ficha del jugador y el numero de la casilla que eligió el jugador
 
 };
 
@@ -67,50 +70,77 @@ void Computadora::mostrarTablero() {
 
 bool Computadora::verificarGanador() {
 
-    bool ganador = false;
+    bool quienEsGanador = false;
 
-    for(int i=0; i <= 23 ; i = i+3) {
-        if (vecJugadas[i] == vecJugPos[i]  && vecJugadas[i+1] == vecJugPos[i+1] && vecJugadas[i + 2] == vecJugPos[i + 2] && vecJugadas[i] == " ") {
-            ganador = true;
+    for(int item = 1; i <= 23; i+3){
+        if(vecJugadas[item] == vecJugPos[item]  && vecJugadas[item+1] == vecJugPos[item+1] && vecJugadas[item + 2] == vecJugPos[item + 2] && vecJugadas[item] == " " ){
+            quienEsGanador = true;
         }
     }
 
-    return ganador;
-
-
-
-};
-
-bool Computadora::verificarGanador(string persona) {
-
-    bool ganador = false;
-
-    for(int i=0; i <= 23 ; i = 1+3) {
-        if (vecJugadas[i] == vecJugPos[i]  && vecJugadas[i+1] == vecJugPos[i+1] && vecJugadas[i + 2] == vecJugPos[i + 2] && vecJugadas[i] == persona) {
-            ganador = true;
-        }
-    }
-
-    return ganador;
+    return quienEsGanador;
 
 };
 
 int Computadora::minimax(unordered_map<int,string> tabs, int rama, bool indicadorMaximo) {
     // TODO: Verificacion de resultados
 
-    if(indicadorMaximo){
-        mejorPuntaje = -1000;
-        for(pair<int,string> element : tabs){
-            if (element.second == " "){
-                element.second = "0";
-                puntaje = minimax({{element.first,element.second}},rama+1,false);
-                element.second = " ";
-                if(puntaje > mejorPuntaje)
-                    mejorPuntaje = puntaje;
+    // TODO: Repite la misma idea implementada que en la función jugarComputadora, por esto es que ambas están relacionadas entre sí
+
+    // Verifico si el indicador me permite seguir profundizando en las ramas
+
+    unordered_map<int, string>::iterator it = tabs.begin();
+    /*
+    while(it != tabs.end()) {
+        if (it->second == " " && indicadorMaximo == true) {
+            mejorPuntaje = -1000;
+            // En caso afirmativo lo marco y asigno puntaje diciendole que no profundice la rama
+            it->second = "0";
+            puntaje = minimax({{it->first, it->second}}, rama + 1, false);
+            // Reseteo el valor de la posicion
+            it->second = " ";
+            // Verifico que el puntaje sea menor al puntaje mayor
+            if (puntaje > mejorPuntaje) {
+                mejorPuntaje = puntaje;
             }
         }
-    }else{
-        mejorPuntaje = 1000;
+            //mismo que lo anterior exceptuando algunas opuestas y debe ser así
+        else if (it->second == " " && indicadorMaximo == false) {
+            mejorPuntaje = 1000;
+            it->second = "X";
+            puntaje = minimax({{it->first, it->second}}, rama + 1, true);
+            it->second = " ";
+            if (puntaje < mejorPuntaje){
+                mejorPuntaje = puntaje;
+            }
+
+        }
+    }
+
+    return mejorPuntaje;
+   */
+
+    //Según el valor de indicadorMaximo que le pasaré por defecto en la función jugarComputadora hará una cosa u otra
+    if(indicadorMaximo){
+        mejorPuntaje = -1000; //Le asigno a la variable mejorPuntaje un número por default para luego ser comparda con la variable que retornará puntaje(que retornará) la función minimax, según el valor el valor de indicadorMaximo
+        // Recorro todos los casilleros del tablero mientras que puntaje sea distinto de 0
+        for(pair<int,string> element : tabs){
+            // Verifico si esta vacio
+            if (element.second == " "){
+                // En caso afirmativo lo marco y asigno puntaje diciendole que no profundice la rama
+                element.second = "0";
+                puntaje = minimax({{element.first,element.second}},rama+1,false);
+                // Reseteo el valor de la posicion
+                element.second = " ";
+                // Verifico que el puntaje sea menor al puntaje mayor
+                if(puntaje > mejorPuntaje) {
+                    mejorPuntaje = puntaje;
+                }
+            }
+        }
+    }//mismo que lo anterior exceptuando algunas opuestas y debe ser así
+    else{
+        mejorPuntaje = 1000; //Le asigno a la variable mejorPuntaje un número por default para luego ser comparda con la variable que retornará puntaje(que retornará) la función minimax, según el valor el valor de indicadorMaximo
         for(pair<int, string>element : tabs){
             if (element.second == " "){
                 element.second = "X";
@@ -121,32 +151,33 @@ int Computadora::minimax(unordered_map<int,string> tabs, int rama, bool indicado
             }
         }
     }
-    return mejorPuntaje;
+    return puntaje; //retornará el valor que final según como se fueron dando lo anterior
+
 }
 
 int Computadora::jugarComputadora() {
-    mejorPuntaje = -1000;
-    mejorMovimiento = 0;
 
-    for(pair<int,string> element : tablero){
+    mejorPuntaje = -1000; //Le asigno a la variable mejorPuntaje un número por default para luego ser comparada con la variable que retornará puntaje(que retornará) la función minimax
+
+    for(pair<int,string> element : tablero){  //recore el tablero/definido como diccionario
+        //preguntará por el segunto elemento del diccionario es decir, la contine los valores String..ya que element.first contiene los Integer que serán el indices
         if(element.second == " "){
+            //...por defecto si la primera poscion esta vacía inserta la ficha en este mismo lugar
             element.second = "0";
             //cout << "Procediendo con el minmax"<< endl;
-            // Hay que revisar esta funcion
+            //llamando a la función minimax por medio la variable puntaje que adoptará el valor de dicha función
             puntaje = minimax({{element.first,element.second}},0,false);
             //cout << "El resultado del minimax: " << puntaje << endl;
-
             element.second = " ";
 
-            if(puntaje > mejorPuntaje){
-                mejorPuntaje = puntaje;
-                mejorMovimiento = element.first;
+            if(puntaje > mejorPuntaje){   // preguntará en cada ciclo, por ambas variables 'importantes' si son iguales, idea implementada por lo que se llama poda-alfa
+                mejorPuntaje = puntaje;     // igualo ambos valores como actualización del punteje general
+                mejorMovimiento = element.first;  //le asigna el primer valor del tablero osea el integer, en la que la vuelta donde llegó que si se cumple la condicón anterior
             }
         }
 
     }
 
-    cout << "LLegue: " << mejorMovimiento <<endl;
-    return insertarFicha("0", mejorMovimiento);
+    return insertarFicha("0", mejorMovimiento); //retorna como resultado la función que insertará la ficha dentro del tablero pasandole como parametro, "0" que será la ficha de la computadora y mejormovimiento que tendrá como valor aquel indice del diccionario tablero
 }
 
