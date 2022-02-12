@@ -8,9 +8,6 @@
 #include <unordered_map>
 #include <stdio.h>
 
-using namespace std;
-
-
 Computadora::Computadora() {};
 
 int Computadora::insertarFicha(string ficha, int casilla) {
@@ -30,13 +27,8 @@ int Computadora::insertarFicha(string ficha, int casilla) {
 };
 
 int Computadora::jugarHumano(string ficha,int casilla) {
-
-    vecJugadas.sort();
     vecJugadas[casilla] += casilla;  //vecJugadas//vecJugadas->append(to_string(casilla));
-
-
     return insertarFicha(ficha,casilla); //retorna como resultado la función que insertará la ficha dentro del tablero pasandole como parametro, "X" que será la ficha del jugador y el numero de la casilla que eligió el jugador
-
 };
 
 bool Computadora::esEmpate(){
@@ -50,19 +42,15 @@ bool Computadora::esEmpate(){
 }
 
 bool Computadora::comprobarCasilleroLibre(int casilla) {
-
     bool resultado = false;
 
     if(tablero[casilla] == " "){
         resultado = true;
-
     }
     return resultado;
-
 };
 
 void Computadora::mostrarTablero() {
-
     cout << "_" << tablero[1] << "_|_" << tablero[2] << "_|_" << tablero[3] << "_" << endl;
     cout << "_" << tablero[4] << "_|_" << tablero[5] << "_|_" << tablero[6] << "_" << endl;
     cout << " " << tablero[7] << " | " << tablero[8] << " | " << tablero[9] << " " << endl;
@@ -72,7 +60,7 @@ bool Computadora::verificarGanador() {
 
     bool quienEsGanador = false;
 
-    for(int item = 1; i <= 23; i+3){
+    for(int item = 1; item <= 23; item+3){
         if(vecJugadas[item] == vecJugPos[item]  && vecJugadas[item+1] == vecJugPos[item+1] && vecJugadas[item + 2] == vecJugPos[item + 2] && vecJugadas[item] == " " ){
             quienEsGanador = true;
         }

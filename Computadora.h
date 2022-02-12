@@ -14,10 +14,10 @@ using namespace std;
 
 class Computadora {
 
-public:
+    public:
     /*
-     * varialbes
-     */
+    * variables
+    */
     int mejorPuntaje;     //va a adoptar hasta el momento de la partida, en detalles lo quu sería la iteración el mejor puntaje hasta el momento, utilizado para uso exclusivo del algortimo minmax en uso de la IA
     int mejorMovimiento;  //va a adoptar hasta el momento de la partida, en detalles lo quu sería la iteración el mejor movimiento que seria conveniente hasta el momento, utilizado para uso exclusivo del algortimo minmax en uso de la IA
     int puntaje;   //va a doptar hasta el momento de la partida, en detalles lo quu sería la iteración el mejor puntaje hasta el momento, utilizado para uso exclusivo del algortimo minmax en uso de la IA
@@ -26,7 +26,17 @@ public:
     * vectores
     */
     string vecJugadas[10];
-    unordered_map<int,string>tablero = {{1, " "},{2, " "},{3, " "},{4, " "},{5, " "},{6, " "},{7, " "},{8, " "},{9, " "};//,{10, " "}};
+    unordered_map<int,string> tablero = {
+            {1, " "},
+            {2, " "},
+            {3, " "},
+            {4, " "},
+            {5, " "},
+            {6, " "},
+            {7, " "},
+            {8, " "},
+            {9, " "}
+    };
     string vecJugPos[24] = {"1", "5", "9", "3", "5", "7", "1", "4", "7","2", "5", "8", "3", "6", "9", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     Computadora();
@@ -42,8 +52,7 @@ public:
 
 //private:
     int minimax(unordered_map<int,string> tabs, int rama, bool indicadorMaximo);
+
 };
-
-
 
 #endif //MAIN_CPP_JUEGO_H

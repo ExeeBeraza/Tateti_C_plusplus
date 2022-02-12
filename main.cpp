@@ -5,24 +5,23 @@
 
 #include "Jugador.h"
 #include "Computadora.h"
+#include "DatoSesion.h"
 #include "Computadora.cpp"
 #include "DatoSesion.cpp"
 #include "Score.cpp"
 #include <iostream>
-
-
 
 using namespace std;
 
 int main(){
 
     /* Abstraciones de clases*/
-    Computadora oComputadora;
-    Jugador oJugador;
+    Computadora computadora;
+    Jugador jugador;
     DatoSesion datoSesion;
     Score score;
 
-    /* variables locales, contadores, opciones para el menó...etc*/
+    /* variables locales, contadores, opciones para el menu ...etc */
     int modoJuego, opIngreso, intentos = 0;
     bool verificador = true;
 
@@ -38,12 +37,12 @@ int main(){
          if(opIngreso==1){
 
             cout<<"Nombre de usuario: ";
-            cin >> oJugador.nombre_usuario;
+            cin >> jugador.nombre_usuario;
 
             cout<<"contraseña: ";
-            cin >> oJugador.password;
+            cin >> jugador.password;
 
-            if(datoSesion.guardarDatos(oJugador.nombre,oJugador.nombre_usuario,oJugador.password)==0){
+            if(datoSesion.guardarDatos(jugador.nombre,jugador.nombre_usuario,jugador.password)==0){
                 cout<<"¡Datos ingresados incorrectamente!"<<endl;
                 intentos ++;
             };
@@ -51,18 +50,18 @@ int main(){
         else if(opIngreso==2){
 
             cout << "Nombre: ";
-            cin >> oJugador.nombre;
+            cin >> jugador.nombre;
 
             cout<<"Nombre de usuario: ";
-            cin >> oJugador.nombre_usuario;
+            cin >> jugador.nombre_usuario;
 
             cout << "contraseña: ";
-            cin >> oJugador.password;
+            cin >> jugador.password;
 
-            if(datoSesion.buscarDatos(oJugador.nombre_usuario,oJugador.password)==2){
+            if(datoSesion.buscarDatos(jugador.nombre_usuario,jugador.password)==2){
                 cout<<"Encontrado!"<<endl;
             }
-            else if(datoSesion.buscarDatos(oJugador.nombre_usuario,oJugador.password)==1){
+            else if(datoSesion.buscarDatos(jugador.nombre_usuario,jugador.password)==1){
                 cout<<"NO Encontrado!"<<endl;
             }
             else{
@@ -99,44 +98,43 @@ int main(){
 
             /*Turno en X*/
             cout << "Turno X ";
-            cin >> oJugador.numeroCasillero;
-            oComputadora.jugarHumano("X",oJugador.numeroCasillero);
+            cin >> jugador.numeroCasillero;
+            computadora.jugarHumano("X",jugador.numeroCasillero);
             //system("clear");
 
             /*Turno en 0*/
             cout << "Turno 0 ";
-            cin >> oJugador.numeroCasillero;
-            oComputadora.jugarHumano("0",oJugador.numeroCasillero);
+            cin >> jugador.numeroCasillero;
+            computadora.jugarHumano("0",jugador.numeroCasillero);
 
-            if(oComputadora.verificarGanador()==true) {
+            if(computadora.verificarGanador()==true) {
                 cout << "¡X GANADOR!";
-                verificador = false
+                verificador = false;
             }
-            else if(oComputadora.verificarGanador()== false){
+            else if(computadora.verificarGanador()== false){
                 cout << "¡0 GANADOR!";
                 verificador = false;
             }
 
-            else if(oComputadora.esEmpate()){
+            else if(computadora.esEmpate()){
                 cout << "¡EMPATE!";
                 verificador = false;
             }
         }
     }
-
     else if(modoJuego ==2){
-        while (verificador == true) {
+        while (verificador) {
             /*Turno en X*/
             cout << "Turno X" << endl;
-            cin >> oJugador.numeroCasillero;
-            oComputadora.jugarHumano("X",oJugador.numeroCasillero);
+            cin >> jugador.numeroCasillero;
+            computadora.jugarHumano("X",jugador.numeroCasillero);
 
             /*Turno en 0*/
             cout << "Turno 0" << endl;
-            oComputadora.jugarComputadora();
+            computadora.jugarComputadora();
 
             score.guardarScore("0");
-
+            verificador = computadora.verificarGanador();
         }
     }
 
