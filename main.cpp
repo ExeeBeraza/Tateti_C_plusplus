@@ -132,9 +132,10 @@ int main(){
             /*Turno en 0*/
             cout << "Turno 0" << endl;
             computadora.jugarComputadora();
+            cout << "Finalizando turno" << endl;
 
             score.guardarScore("0");
-            verificador = computadora.verificarGanador();
+            verificador = !verificador;//computadora.verificarGanador();
         }
     }
 

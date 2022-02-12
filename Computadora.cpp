@@ -71,91 +71,54 @@ bool Computadora::verificarGanador() {
 };
 
 int Computadora::minimax(unordered_map<int,string> tabs, int rama, bool indicadorMaximo) {
+
+    cout << "Minimax"<<endl;
+
+    string ficha;
+
     // TODO: Verificacion de resultados
 
     // TODO: Repite la misma idea implementada que en la función jugarComputadora, por esto es que ambas están relacionadas entre sí
 
     // Verifico si el indicador me permite seguir profundizando en las ramas
 
-    unordered_map<int, string>::iterator it = tabs.begin();
-    /*
-    while(it != tabs.end()) {
-        if (it->second == " " && indicadorMaximo == true) {
-            mejorPuntaje = -1000;
-            // En caso afirmativo lo marco y asigno puntaje diciendole que no profundice la rama
-            it->second = "0";
-            puntaje = minimax({{it->first, it->second}}, rama + 1, false);
-            // Reseteo el valor de la posicion
-            it->second = " ";
-            // Verifico que el puntaje sea menor al puntaje mayor
-            if (puntaje > mejorPuntaje) {
-                mejorPuntaje = puntaje;
-            }
-        }
-            //mismo que lo anterior exceptuando algunas opuestas y debe ser así
-        else if (it->second == " " && indicadorMaximo == false) {
-            mejorPuntaje = 1000;
-            it->second = "X";
-            puntaje = minimax({{it->first, it->second}}, rama + 1, true);
-            it->second = " ";
-            if (puntaje < mejorPuntaje){
-                mejorPuntaje = puntaje;
-            }
+    if (indicadorMaximo){
+        mejorPuntaje=-1000;
+        ficha = "0";
+    }else{
+        mejorPuntaje=1000;
+        ficha="X";
+    }
 
+    for(pair<int,string> element : tabs){
+        if(element.second == " "){
+            element.second = ficha;
+            puntaje = minimax({{element.first,element.second}},rama+1,!indicadorMaximo);
+            element.second = " ";
         }
     }
 
-    return mejorPuntaje;
-   */
+    mejorPuntaje = puntaje;
 
-    //Según el valor de indicadorMaximo que le pasaré por defecto en la función jugarComputadora hará una cosa u otra
-    if(indicadorMaximo){
-        mejorPuntaje = -1000; //Le asigno a la variable mejorPuntaje un número por default para luego ser comparda con la variable que retornará puntaje(que retornará) la función minimax, según el valor el valor de indicadorMaximo
-        // Recorro todos los casilleros del tablero mientras que puntaje sea distinto de 0
-        for(pair<int,string> element : tabs){
-            // Verifico si esta vacio
-            if (element.second == " "){
-                // En caso afirmativo lo marco y asigno puntaje diciendole que no profundice la rama
-                element.second = "0";
-                puntaje = minimax({{element.first,element.second}},rama+1,false);
-                // Reseteo el valor de la posicion
-                element.second = " ";
-                // Verifico que el puntaje sea menor al puntaje mayor
-                if(puntaje > mejorPuntaje) {
-                    mejorPuntaje = puntaje;
-                }
-            }
-        }
-    }//mismo que lo anterior exceptuando algunas opuestas y debe ser así
-    else{
-        mejorPuntaje = 1000; //Le asigno a la variable mejorPuntaje un número por default para luego ser comparda con la variable que retornará puntaje(que retornará) la función minimax, según el valor el valor de indicadorMaximo
-        for(pair<int, string>element : tabs){
-            if (element.second == " "){
-                element.second = "X";
-                puntaje = minimax({{element.first,element.second}},rama+1, true);
-                element.second = " ";
-                if(puntaje < mejorPuntaje)
-                    mejorPuntaje = puntaje;
-            }
-        }
-    }
-    return puntaje; //retornará el valor que final según como se fueron dando lo anterior
-
+    return puntaje;
 }
 
 int Computadora::jugarComputadora() {
-
+    cout << "Jugando la computadora" << endl;
     // Establesco el mejor puntaje por default (se
     mejorPuntaje = -1000;
 
     // Recorro el tablero
     for(pair<int,string> element : tablero){
+        cout << "El elemento: " << element.first << " :: " << element.second << endl;
 
         // ¿El casillero esta vacio?
         if(element.second == " "){
             // Ocupo el lugar (momentaneamente)
             element.second = "0";
             // Asigno el puntaje
+
+            cout << "#1" << endl;
             puntaje = minimax({{element.first,element.second}},0,false);
             element.second = " ";
 
@@ -170,6 +133,7 @@ int Computadora::jugarComputadora() {
     }
 
     // Ocupo el lugar (definitivamente)
+    cout << "El mejor movimiento: " << mejorMovimiento << endl;
     return insertarFicha("0", mejorMovimiento);
 }
 
